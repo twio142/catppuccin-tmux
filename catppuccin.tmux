@@ -81,6 +81,7 @@ main() {
   add_tmux_batch_option "@catppuccin_menu_style"
   add_tmux_batch_option "@catppuccin_menu_selected_style"
   add_tmux_batch_option "@catppuccin_menu_border_style"
+  add_tmux_batch_option "@catppuccin_mode_style"
   add_tmux_batch_option "@catppuccin_pane_status_enabled"
   add_tmux_batch_option "@catppuccin_pane_border_status"
   add_tmux_batch_option "@catppuccin_pane_border_style"
@@ -209,7 +210,8 @@ main() {
 
   # modes
   setw clock-mode-colour "${thm_blue}"
-  setw mode-style "fg=${thm_pink} bg=${thm_black4} bold"
+  mode_style=$(get_interpolated_tmux_batch_option "@catppuccin_mode_style" "fg=${thm_pink} bg=${thm_black4} bold")
+  setw mode-style "$mode_style"
 
   tmux "${tmux_commands[@]}"
 }
