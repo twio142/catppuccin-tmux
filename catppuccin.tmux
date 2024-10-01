@@ -50,8 +50,12 @@ main() {
   # NOTE: For backwards compatibility remove before 1.0.0 and set default for
   # `@catppuccin_flavor` from `""` to `"mocha"`
   if [ -z "$theme" ]; then
-    theme="$(get_tmux_option "@catppuccin_flavour" "mocha")"
-    tmux_echo "catppuccin warning: \\\"@catppuccin_flavour\\\" has been deprecated use \\\"@catppuccin_flavor\\\"" 103
+    theme="$(get_tmux_option "@catppuccin_flavour" "")"
+    if [ -n "$theme" ]; then
+      tmux_echo "catppuccin warning: \\\"@catppuccin_flavour\\\" has been deprecated use \\\"@catppuccin_flavor\\\"" 103
+    else
+      theme="mocha"
+    fi
   fi
 
   # NOTE: Pulling in the selected theme by the theme that's being set as local
@@ -97,6 +101,7 @@ main() {
   add_tmux_batch_option "@catppuccin_window_number_position"
   add_tmux_batch_option "@catppuccin_window_status"
   add_tmux_batch_option "@catppuccin_status_left_separator"
+  add_tmux_batch_option "@catppuccin_status_middle_separator"
   add_tmux_batch_option "@catppuccin_status_right_separator"
   add_tmux_batch_option "@catppuccin_status_connect_separator"
   add_tmux_batch_option "@catppuccin_status_fill"
@@ -184,7 +189,7 @@ main() {
   # NOTE: update default to `"no"` when removing the backwards compatibility for
   # `@catppuccin_window_status_enable` and
   # `@catppuccin_window_status_icon_enable` in ./builder/window_builder.sh
-  window_status=$(get_tmux_batch_option "@catppuccin_window_status" "") # no, icon, text
+  window_status=$(get_tmux_batch_option "@catppuccin_window_status" "no") # no, icon, text
 
   window_format=$(load_modules "window_default_format" "$modules_custom_path" "$modules_window_path")
   setw window-status-format "$(do_color_interpolation "$window_format")"
@@ -193,10 +198,11 @@ main() {
   setw window-status-current-format "$(do_color_interpolation "$window_current_format")"
 
   # status module
-  local status_left_separator status_right_separator status_connect_separator \
+  local status_left_separator status_middle_separator status_right_separator status_connect_separator \
     status_fill status_modules_left status_modules_right
   status_left_separator=$(get_tmux_batch_option "@catppuccin_status_left_separator" "")
   status_right_separator=$(get_tmux_batch_option "@catppuccin_status_right_separator" "█")
+  status_middle_separator=$(get_tmux_batch_option "@catppuccin_status_middle_separator" "")
   status_connect_separator=$(get_tmux_batch_option "@catppuccin_status_connect_separator" "yes")
   status_fill=$(get_tmux_batch_option "@catppuccin_status_fill" "icon")
 
