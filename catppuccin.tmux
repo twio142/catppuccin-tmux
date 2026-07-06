@@ -125,7 +125,7 @@ main() {
   else
     if [ "${status_background}" = "default" ]; then
       set status-style bg=default
-      message_background="default"
+      message_background="terminal"
     else
       message_background="$(do_color_interpolation "$status_background")"
       set status-bg "${message_background}"
@@ -136,8 +136,8 @@ main() {
   set status-right-length "100"
 
   # messages
-  set message-style "fg=${thm_cyan},bg=${message_background},align=centre"
-  set message-command-style "fg=${thm_cyan},bg=${message_background},align=centre"
+  set message-style "fg=${thm_cyan},bg=${message_background},fill=${message_background}"
+  set message-command-style "fg=${thm_cyan},bg=${message_background},fill=${message_background}"
 
   # menu
   local menu_style menu_selected_style menu_border_style
